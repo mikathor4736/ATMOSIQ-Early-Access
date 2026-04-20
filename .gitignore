@@ -41,8 +41,14 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Client build output
+/client/build
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
+
+# Temporary editor files
+.index.js.swp
 
 # TypeScript cache
 *.tsbuildinfo
