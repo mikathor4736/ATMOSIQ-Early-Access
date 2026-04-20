@@ -227,7 +227,7 @@ function App() {
 
           <div className="mb-3">
             <label className="form-label">
-              Email <span className="text-danger">*</span> <span className="text-danger fw-bold">REQUIRED</span>
+              Email <span className="text-danger">*</span> <span className="text-danger text-small fw-bold">REQUIRED</span>
             </label>
             <input
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
