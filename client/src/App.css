@@ -38,6 +38,10 @@ body {
   z-index: 1;
 }
 
+.privacy {
+  text-wrap: pretty;
+}
+
 @keyframes hologram-rotate {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
