@@ -8,6 +8,7 @@ body {
 
 /* Animated background */
 .container {
+  position: relative;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,10 +20,13 @@ body {
 
 .overlay {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(56, 217, 245, 0.1), transparent);
   animation: pulse 8s infinite linear;
+  pointer-events: none;
 }
 
 @keyframes pulse {
