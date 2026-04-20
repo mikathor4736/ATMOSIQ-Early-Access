@@ -10,6 +10,11 @@ function App() {
   const [errors, setErrors] = useState({});
   const [alert, setAlert] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [submissions, setSubmissions] = useState([]);
+
+  const ADMIN_PASSWORD = "atmosadmin"; // Simple password for demo
 
   const validate = () => {
     const validationErrors = {};
@@ -83,6 +88,74 @@ function App() {
     }
   };
 
+  const handleAdminLogin = () => {
+    if (adminPassword === ADMIN_PASSWORD) {
+      setShowAdmin(true);
+      fetchSubmissions();
+    } else {
+      alert("Incorrect password");
+    }
+  };
+
+  const fetchSubmissions = async () => {
+    try {
+      const response = await fetch("/api/submissions");
+      if (response.ok) {
+        const data = await response.json();
+        setSubmissions(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch submissions:", error);
+    }
+  };
+
+  if (showAdmin) {
+    return (
+      <div className="container">
+        <div className="overlay"></div>
+        <h1 className="title">Admin Panel</h1>
+        <button className="btn btn-secondary mb-3" onClick={() => setShowAdmin(false)}>
+          Back to Form
+        </button>
+        <div className="table-responsive">
+          <table className="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submissions.map((sub) => (
+                <tr key={sub.id}>
+                  <td>{sub.id}</td>
+                  <td>{sub.firstName}</td>
+                  <td>{sub.lastName}</td>
+                  <td>{sub.email}</td>
+                  <td>{new Date(sub.date).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <footer className="footer mt-5">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12 text-center">
+                <p className="mb-0">
+                  &copy; {new Date().getFullYear()} ATMOSIQ. All rights reserved. Trademark and copyright pending.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="overlay"></div>
@@ -153,6 +226,31 @@ function App() {
       <p className="privacy">
         We collect basic technical data (IP & location) to improve service and understand demand.
       </p>
+
+      <div className="admin-login mt-3">
+        <input
+          type="password"
+          className="form-control d-inline-block w-auto me-2"
+          placeholder="Admin Password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.target.value)}
+        />
+        <button className="btn btn-outline-secondary" onClick={handleAdminLogin}>
+          Admin
+        </button>
+      </div>
+
+      <footer className="footer mt-5">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12 text-center">
+              <p className="mb-0">
+                &copy; {new Date().getFullYear()} ATMOSIQ. All rights reserved. Trademark and copyright pending.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
