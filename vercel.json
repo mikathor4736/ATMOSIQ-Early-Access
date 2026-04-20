@@ -2,7 +2,6 @@
   "version": 2,
   "buildCommand": "npm --prefix=client run build",
   "outputDirectory": "./client/build",
-  "public": "client/build",
   "rewrites": [
     {
       "source": "/api/(.*)",
