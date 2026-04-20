@@ -21,11 +21,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/[^.]+",
-      "dest": "/",
+      "dest": "/index.html",
       "status": 200
     }
   ]
