@@ -16,28 +16,44 @@ function App() {
 
   const ADMIN_PASSWORD = "atmosadmin"; // Simple password for demo
 
-  const validate = () => {
-    const validationErrors = {};
+  const validateField = (fieldName, value) => {
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!nameRegex.test(form.firstName)) {
-      validationErrors.firstName = "Please enter letters only, no special characters.";
+    switch (fieldName) {
+      case 'firstName':
+      case 'lastName':
+        return nameRegex.test(value) ? '' : "Please enter letters only, no special characters.";
+      case 'email':
+        return emailRegex.test(value) ? '' : "Please check the email format is correct. Example: test@test.com";
+      default:
+        return '';
     }
-    if (!nameRegex.test(form.lastName)) {
-      validationErrors.lastName = "Please enter letters only, no special characters.";
-    }
-    if (!emailRegex.test(form.email)) {
-      validationErrors.email = "Please check the email format is correct. Example: test@test.com";
-    }
+  };
 
-    return validationErrors;
+  const handleFieldChange = (fieldName, value) => {
+    setForm({ ...form, [fieldName]: value });
+    // Clear error when user starts typing
+    if (errors[fieldName]) {
+      setErrors({ ...errors, [fieldName]: '' });
+    }
+  };
+
+  const handleFieldBlur = (fieldName, value) => {
+    const error = validateField(fieldName, value);
+    setErrors({ ...errors, [fieldName]: error });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAlert(null);
-    const validationErrors = validate();
+
+    // Validate all fields before submission
+    const validationErrors = {};
+    Object.keys(form).forEach(field => {
+      const error = validateField(field, form[field]);
+      if (error) validationErrors[field] = error;
+    });
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -112,6 +128,7 @@ function App() {
   if (showAdmin) {
     return (
       <div className="container">
+        <div className="globe-background"></div>
         <div className="overlay"></div>
         <h1 className="title">Admin Panel</h1>
         <button className="btn btn-secondary mb-3" onClick={() => setShowAdmin(false)}>
@@ -158,6 +175,7 @@ function App() {
 
   return (
     <div className="container">
+      <div className="globe-background"></div>
       <div className="overlay"></div>
 
       <h1 className="title">ATMOS<span className="teal">IQ</span></h1>
@@ -172,13 +190,15 @@ function App() {
 
         <form onSubmit={handleSubmit} className="form needs-validation" noValidate>
           <div className="mb-3">
+            <label className="form-label">
+              First Name <span className="text-danger">*</span> <span className="text-danger fw-bold">REQUIRED</span>
+            </label>
             <input
               className={`form-control ${errors.firstName ? "is-invalid" : ""}`}
               placeholder="First Name"
               value={form.firstName}
-              onChange={(e) =>
-                setForm({ ...form, firstName: e.target.value })
-              }
+              onChange={(e) => handleFieldChange('firstName', e.target.value)}
+              onBlur={(e) => handleFieldBlur('firstName', e.target.value)}
               required
             />
             {errors.firstName && (
@@ -187,13 +207,15 @@ function App() {
           </div>
 
           <div className="mb-3">
+            <label className="form-label">
+              Last Name <span className="text-danger">*</span> <span className="text-danger fw-bold">REQUIRED</span>
+            </label>
             <input
               className={`form-control ${errors.lastName ? "is-invalid" : ""}`}
               placeholder="Last Name"
               value={form.lastName}
-              onChange={(e) =>
-                setForm({ ...form, lastName: e.target.value })
-              }
+              onChange={(e) => handleFieldChange('lastName', e.target.value)}
+              onBlur={(e) => handleFieldBlur('lastName', e.target.value)}
               required
             />
             {errors.lastName && (
@@ -202,14 +224,16 @@ function App() {
           </div>
 
           <div className="mb-3">
+            <label className="form-label">
+              Email <span className="text-danger">*</span> <span className="text-danger fw-bold">REQUIRED</span>
+            </label>
             <input
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
               placeholder="Email"
               type="email"
               value={form.email}
-              onChange={(e) =>
-                setForm({ ...form, email: e.target.value })
-              }
+              onChange={(e) => handleFieldChange('email', e.target.value)}
+              onBlur={(e) => handleFieldBlur('email', e.target.value)}
               required
             />
             {errors.email && (
