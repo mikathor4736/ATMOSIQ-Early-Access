@@ -1,0 +1,83 @@
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #050d1a;
+  color: white;
+  overflow: hidden;
+}
+
+/* Animated background */
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at 50% 50%, #050d1a, #000);
+}
+
+.overlay {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(56, 217, 245, 0.1), transparent);
+  animation: pulse 8s infinite linear;
+}
+
+@keyframes pulse {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.title {
+  font-size: 4rem;
+  letter-spacing: 4px;
+  color: white;
+}
+
+.teal {
+  color: #38d9f5;
+}
+
+.subtitle {
+  margin-bottom: 20px;
+  color: #38d9f5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+}
+
+input {
+  padding: 12px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border-bottom: 2px solid #38d9f5;
+}
+
+button {
+  padding: 12px;
+  background: #38d9f5;
+  border: none;
+  color: #050d1a;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #2bb8d6;
+  transform: scale(1.05);
+}
+
+.privacy {
+  font-size: 0.7rem;
+  margin-top: 10px;
+  color: #aaa;
+}
