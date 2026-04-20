@@ -14,7 +14,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #050d1a url('/assets/backgroundGlobe.png') center/cover no-repeat;
+  background: #050d1a center/cover no-repeat;
+  background-size: cover;
   overflow: hidden;
 }
 

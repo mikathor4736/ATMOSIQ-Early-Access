@@ -125,9 +125,13 @@ function App() {
     }
   };
 
+  const bgStyle = {
+    backgroundImage: `url('${process.env.PUBLIC_URL}/assets/backgroundGlobe.png')`
+  };
+
   if (showAdmin) {
     return (
-      <div className="container">
+      <div className="container" style={bgStyle}>
         <div className="overlay"></div>
         <h1 className="title">Admin Panel</h1>
         <button className="btn btn-secondary mb-3" onClick={() => setShowAdmin(false)}>
@@ -173,7 +177,7 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <div className="container" style={bgStyle}>
       <div className="overlay"></div>
 
       <h1 className="title">ATMOS<span className="teal">IQ</span></h1>
