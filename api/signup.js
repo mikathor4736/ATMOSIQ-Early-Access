@@ -1,4 +1,10 @@
+const fs = require("fs").promises;
+const path = require("path");
+const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const NAME_REGEX = /^[A-Za-z]+$/;
 
 const handler = async (req, res) => {
   if (req.method !== "POST") {
@@ -7,8 +13,18 @@ const handler = async (req, res) => {
   }
 
   const { firstName, lastName, email } = req.body || {};
-  const ip =
-    req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "";
+
+  if (!NAME_REGEX.test(firstName)) {
+    return res.status(400).json({ error: "First name must contain letters only." });
+  }
+  if (!NAME_REGEX.test(lastName)) {
+    return res.status(400).json({ error: "Last name must contain letters only." });
+  }
+  if (!EMAIL_REGEX.test(email)) {
+    return res.status(400).json({ error: "Please check the email format is correct. Example: test@test.com" });
+  }
+
+  const ip = req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "";
 
   let locationData = {};
   try {
@@ -18,7 +34,8 @@ const handler = async (req, res) => {
     console.log("Geo lookup failed", err);
   }
 
-  const newSignup = {
+  const submission = {
+    id: crypto.randomUUID(),
     firstName,
     lastName,
     email,
@@ -27,33 +44,43 @@ const handler = async (req, res) => {
     date: new Date().toISOString(),
   };
 
-  console.log("New Signup:", newSignup);
+  const storagePath = path.join(process.cwd(), "server", "submissions.json");
 
-  // Send thank you email
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    await fs.mkdir(path.dirname(storagePath), { recursive: true });
+    const existingContent = await fs.readFile(storagePath, "utf8").catch(() => "[]");
+    const existingData = JSON.parse(existingContent || "[]");
+    existingData.push(submission);
+    await fs.writeFile(storagePath, JSON.stringify(existingData, null, 2), "utf8");
+  } catch (err) {
+    console.log("Failed to write signup data:", err);
+    return res.status(500).json({ error: "Unable to store signup data." });
+  }
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Welcome to the ATMOSIQ Family!",
-      html: `
-        <h2>Welcome to ATMOSIQ!</h2>
-        <p>Dear ${firstName} ${lastName},</p>
-        <p>Thank you for joining the ATMOSIQ family! We pride ourselves in keeping our family and community safe while providing the most comprehensive weather data and predictive AI weather to you.</p>
-        <p>We're thrilled to have you on board and look forward to revolutionizing how you experience weather intelligence.</p>
-        <p>Stay safe and weather-aware!</p>
-        <p>The ATMOSIQ Team</p>
-      `,
-    };
-
+  try {
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Welcome to the ATMOSIQ Family!",
+        html: `
+          <h2>Welcome to ATMOSIQ!</h2>
+          <p>Dear ${firstName} ${lastName},</p>
+          <p>Thank you for joining the ATMOSIQ family! We pride ourselves in keeping our family and community safe while providing the most comprehensive weather data and predictive AI weather to you.</p>
+          <p>We're thrilled to have you on board and look forward to revolutionizing how you experience weather intelligence.</p>
+          <p>Stay safe and weather-aware!</p>
+          <p>The ATMOSIQ Team</p>
+        `,
+      };
+
       await transporter.sendMail(mailOptions);
       console.log("Welcome email sent to:", email);
     } else {
@@ -61,10 +88,9 @@ const handler = async (req, res) => {
     }
   } catch (err) {
     console.log("Email send failed:", err.message);
-    // Don't fail the signup if email fails
   }
 
-  res.status(200).json({ success: true });
+  res.status(200).json({ success: true, submission });
 };
 
 module.exports = handler;
