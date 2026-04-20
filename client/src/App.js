@@ -129,6 +129,7 @@ function App() {
     return (
       <div className="container">
         <div className="globe-background"></div>
+        <div className="connection-lines"></div>
         <div className="overlay"></div>
         <h1 className="title">Admin Panel</h1>
         <button className="btn btn-secondary mb-3" onClick={() => setShowAdmin(false)}>
@@ -176,6 +177,7 @@ function App() {
   return (
     <div className="container">
       <div className="globe-background"></div>
+      <div className="connection-lines"></div>
       <div className="overlay"></div>
 
       <h1 className="title">ATMOS<span className="teal">IQ</span></h1>
