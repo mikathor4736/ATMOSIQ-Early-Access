@@ -29,6 +29,15 @@ body {
   pointer-events: none;
 }
 
+#root {
+  border:#38d9f5 2px solid;
+  border-radius: 20px;
+  padding: 40px;
+  background: rgba(124, 115, 115, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
 @keyframes hologram-rotate {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
