@@ -250,7 +250,7 @@ function App() {
       </div>
 
       <p className="privacy">
-        We collect basic technical data (IP & location) to improve <br> service and understand demand.
+        We collect basic technical data (IP & location) to improve <br /> service and understand demand.
       </p>
 
       <div className="admin-login mt-3">
