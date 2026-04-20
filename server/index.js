@@ -48,6 +48,4 @@ app.get("/signups", (req, res) => {
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("Server running on port", process.env.PORT || 5000);
-});
+module.exports = app;
