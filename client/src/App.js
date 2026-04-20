@@ -179,7 +179,7 @@ function App() {
   return (
     <div className="container" style={bgStyle}>
       <div className="overlay"></div>
-      <div className="mainContent">
+      <div className="mainContent text-center">
       <h1 className="title">ATMOS<span className="teal">IQ</span></h1>
       <p className="subtitle">AI Weather Intelligence — Coming Soon</p>
 
