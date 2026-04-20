@@ -1,0 +1,9 @@
+{
+  "name": "atmosiq-early-access",
+  "version": "1.0.0",
+  "description": "ATMOSIQ Early Access Signup Application",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  }
+}

@@ -71,13 +71,30 @@ button {
   font-weight: bold;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   background: #2bb8d6;
   transform: scale(1.05);
+}
+
+button:disabled {
+  background: #1a7a8f;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .privacy {
   font-size: 0.7rem;
   margin-top: 10px;
   color: #aaa;
+}
+
+.success-message {
+  text-align: center;
+  z-index: 10;
+}
+
+.success-text {
+  color: #38d9f5;
+  font-size: 1.1rem;
+  margin-top: 20px;
 }
