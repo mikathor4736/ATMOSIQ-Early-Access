@@ -179,7 +179,7 @@ function App() {
   return (
     <div className="container" style={bgStyle}>
       <div className="overlay"></div>
-
+      <div className="mainContent">
       <h1 className="title">ATMOS<span className="teal">IQ</span></h1>
       <p className="subtitle">AI Weather Intelligence — Coming Soon</p>
 
@@ -264,6 +264,7 @@ function App() {
         <button className="btn btn-outline-secondary" onClick={handleAdminLogin}>
           Admin
         </button>
+      </div>
       </div>
 
       <footer className="footer mt-5">

@@ -29,7 +29,7 @@ body {
   pointer-events: none;
 }
 
-#root {
+.mainContent {
   border:#38d9f5 2px solid;
   border-radius: 20px;
   padding: 40px;
