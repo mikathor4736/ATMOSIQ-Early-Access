@@ -249,7 +249,7 @@ function App() {
         </form>
       </div>
 
-      <p className="privacy">
+      <p className="privacy text-center">
         We collect basic technical data (IP & location) to improve <br /> service and understand demand.
       </p>
 
